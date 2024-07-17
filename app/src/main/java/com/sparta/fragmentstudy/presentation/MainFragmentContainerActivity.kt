@@ -43,7 +43,6 @@ class MainFragmentContainerActivity : AppCompatActivity() {
                             .commit()
                     }
                     "second" -> {
-                        SecondDataFragment().arguments = userBundle
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container_view, SecondDataFragment.newInstance(userBundle))
                             .commit()
