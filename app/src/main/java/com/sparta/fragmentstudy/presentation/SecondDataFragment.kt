@@ -1,22 +1,22 @@
-package com.sparta.fragmentstudy
+package com.sparta.fragmentstudy.presentation
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
+import com.sparta.fragmentstudy.data.UserEntity
 import com.sparta.fragmentstudy.databinding.FragmentSecondBinding
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
-class SecondFragment : Fragment() {
+class SecondDataFragment : Fragment() {
     companion object {
-        fun newInstance() = SecondFragment()
+        fun newInstance(bundle: Bundle): SecondDataFragment {
+            val secondDataFragment = SecondDataFragment()
+            secondDataFragment.arguments = bundle
+            return secondDataFragment
+        }
+
     }
 
     private var _binding: FragmentSecondBinding? = null
@@ -36,23 +36,11 @@ class SecondFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initView()
     }
 
     private fun initView() = with(binding) {
-        /*setFragmentResultListener("bundle_key") { requestKey, bundle ->
-            txtBundleNum.text = bundle.getInt("bundle_key").toString()
-        }*/
-        setFragmentResultListener("bundle_key_2") { requestKey, bundle ->
-            val user = bundle.getParcelable<User>("bundle_key_2")
-            Log.d("debug23323", user!!.name)
-        }
-    }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        val user = arguments?.getParcelable<UserEntity>("user")
+        txtTitle.text = user?.name
     }
 }
