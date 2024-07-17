@@ -22,7 +22,7 @@ class FirstDataFragment : Fragment() {
         fun newInstance() = FirstDataFragment()
     }
 
-    private val userRepository = GetUserRepositoryImpl(CacheDataSource())
+    private val userRepository = GetUserRepositoryImpl(CacheDataSource.getCacheDataSource())
     private lateinit var userEntityList : List<UserEntity>
 
     private var _binding: FragmentFirstBinding? = null
