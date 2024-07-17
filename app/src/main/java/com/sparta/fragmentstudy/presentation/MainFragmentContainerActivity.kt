@@ -15,7 +15,7 @@ class MainFragmentContainerActivity : AppCompatActivity() {
         ActivityMainFragmentContainerBinding.inflate(layoutInflater)
     }
 
-    private lateinit var userBundle : Bundle
+    private lateinit var userBundle: Bundle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,12 +24,12 @@ class MainFragmentContainerActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             EventBus.events.collect { bundle ->
-                userBundle= bundle
+                userBundle = bundle
             }
         }
     }
 
-    private fun setFragment(){
+    private fun setFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container_view, FirstDataFragment.newInstance())
             .commit()
@@ -37,18 +37,25 @@ class MainFragmentContainerActivity : AppCompatActivity() {
         binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.text.toString()) {
-                    "first" ->  {
+                    "first" -> {
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container_view, FirstDataFragment.newInstance())
                             .commit()
                     }
+
                     "second" -> {
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container_view, SecondDataFragment.newInstance(userBundle))
-                            .commit()
+                        if (::userBundle.isInitialized) {
+                            supportFragmentManager.beginTransaction()
+                                .replace(
+                                    R.id.fragment_container_view,
+                                    SecondDataFragment.newInstance(userBundle)
+                                )
+                                .commit()
+                        }
                     }
                 }
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
 
