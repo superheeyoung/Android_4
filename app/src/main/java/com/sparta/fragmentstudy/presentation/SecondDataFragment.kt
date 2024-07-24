@@ -16,7 +16,6 @@ class SecondDataFragment : Fragment() {
             secondDataFragment.arguments = bundle
             return secondDataFragment
         }
-
     }
 
     private var _binding: FragmentSecondBinding? = null

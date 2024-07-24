@@ -10,6 +10,7 @@ import com.sparta.fragmentstudy.databinding.ItemLightBlueCardBinding
 import com.sparta.fragmentstudy.databinding.ItemOrangeCardBinding
 import com.sparta.fragmentstudy.presentation.MultiViewEnum
 
+//adapter : 아이템 단위로 view를 생성하여 recyclerView에 바인딩 시키는 역할
 //클릭 이벤트 처리 람다함수 파라메터로 사용
 class MultiCardAdapter(private val onClick: (UserEntity) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -22,9 +23,8 @@ class MultiCardAdapter(private val onClick: (UserEntity) -> Unit) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         //multi view type을 구현하는 item layout 연결
         //enum ordinal값 사용 보단 enum의 entries(enum의 list를 뽑아서 return)를 뽑아서 사용
-        //sealed class
-        val MuiltiViewType = MultiViewEnum.entries.find { it.viewType == viewType }
-        return when (MuiltiViewType) {
+        val muiltiViewType = MultiViewEnum.entries.find { it.viewType == viewType }
+        return when (muiltiViewType) {
             MultiViewEnum.BLUE -> {
                 val binding =
                     ItemBlueCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -63,13 +63,14 @@ class MultiCardAdapter(private val onClick: (UserEntity) -> Unit) :
         }
     }
 
+    //전체 아이템 개수 리턴
     override fun getItemCount(): Int {
         return userList.size
     }
 
     //viewHolder와 data 바인딩
+    //ViewHolder와 position을 인자로 받아서 holder의 데이터 변경 -> 스크롤 해서 데이터 바인딩이 필요한 만큼 호출
     //클릭 이벤트 처리
-    //TODO
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentItem = userList[position]
         when (holder) {
@@ -108,7 +109,15 @@ class MultiCardAdapter(private val onClick: (UserEntity) -> Unit) :
         return userList[position].cardType.viewType
     }
 
+
+    //VIEWHOLDER : 화면에 표시될 아이템 뷰를 저장하는 객체
     //item layout의 ui값 뿌려주기
+    /*
+    * TODO : 꼭말하기
+    *  inner Class는 내부 클래스로 ViewHolder를 선언하면 묵시적으로 Adapter 클래스를 참조하는것
+    * inner class로 선언시 내부에 숨겨진 Outer Class(Adapter Class)를 보관하게 되고, 참조를 해제하지 못하는 경우가 생겨서 메모리 누수생김 -> 프로파일링 시 찾기 쉽지 않음
+    * 코틀린은 Nested Class가 기본임
+    * */
     class BlueTypeViewHolder(private val binding: ItemBlueCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(user: UserEntity) {

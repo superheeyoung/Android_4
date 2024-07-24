@@ -15,7 +15,6 @@ import com.standard.multiviewtyperecyclerview.presentation.main.main.MultiCardAd
 import kotlinx.coroutines.launch
 
 
-//TODO binding set null -> GC 동작원리
 class FirstDataFragment : Fragment() {
     companion object {
         fun newInstance() = FirstDataFragment()
