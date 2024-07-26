@@ -42,4 +42,10 @@ class SecondDataFragment : Fragment() {
         val user = arguments?.getParcelable<UserEntity>("user")
         txtTitle.text = user?.name
     }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

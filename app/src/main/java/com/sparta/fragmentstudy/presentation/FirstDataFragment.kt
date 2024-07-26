@@ -76,4 +76,10 @@ class FirstDataFragment : Fragment() {
     private fun adapterOnClick(user: UserEntity) {
         Toast.makeText(requireContext(), "유저 이름 : " + user.name, Toast.LENGTH_SHORT).show()
     }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

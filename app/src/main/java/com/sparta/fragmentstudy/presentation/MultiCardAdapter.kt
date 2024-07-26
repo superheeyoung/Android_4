@@ -51,6 +51,9 @@ class MultiCardAdapter(private val onClick: (UserEntity) -> Unit) :
                 OrangeTypeViewHolder(binding)
             }
 
+            /*
+            * TODO   else -> throw IllegalArgumentException("Invalid view type") 하지 말것
+            * */
             else -> {
                 val binding =
                     ItemDefaultBinding.inflate(
