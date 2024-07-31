@@ -1,6 +1,6 @@
-package com.sparta.fragmentstudy.data
+package com.sparta.fragmentstudy.data.database
 
-import com.sparta.fragmentstudy.presentation.UserRepository
+import com.sparta.fragmentstudy.presentation.base.UserRepository
 /*
 * 비지니스 로직을 표현하는데 필요한 DataSource가 몇개 든 client쪽에서는 이를 알 필요가 없다.
 * DataSource의 변경이 발생하더라도 repository 외부 layer로 전파되지 않는다.

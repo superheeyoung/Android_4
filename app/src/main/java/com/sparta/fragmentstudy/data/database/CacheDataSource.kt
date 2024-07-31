@@ -1,4 +1,4 @@
-package com.sparta.fragmentstudy.data
+package com.sparta.fragmentstudy.data.database
 
 
 //TODO : 방법 1) synchronized Singleton Pattern

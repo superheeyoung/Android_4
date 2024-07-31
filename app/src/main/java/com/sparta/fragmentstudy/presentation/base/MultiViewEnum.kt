@@ -1,4 +1,4 @@
-package com.sparta.fragmentstudy.presentation
+package com.sparta.fragmentstudy.presentation.base
 
 enum class MultiViewEnum (val viewType: Int) {
     BLUE(0),

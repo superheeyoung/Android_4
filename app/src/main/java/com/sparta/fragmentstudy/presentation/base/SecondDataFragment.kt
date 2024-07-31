@@ -1,12 +1,11 @@
-package com.sparta.fragmentstudy.presentation
+package com.sparta.fragmentstudy.presentation.base
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.sparta.fragmentstudy.data.UserEntity
+import com.sparta.fragmentstudy.data.database.UserEntity
 import com.sparta.fragmentstudy.databinding.FragmentSecondBinding
 
 class SecondDataFragment : Fragment() {

@@ -1,6 +1,6 @@
-package com.sparta.fragmentstudy.data
+package com.sparta.fragmentstudy.data.database
 
-import com.sparta.fragmentstudy.presentation.MultiViewEnum
+import com.sparta.fragmentstudy.presentation.base.MultiViewEnum
 
 fun userList(): List<UserEntity> {
     return listOf(

@@ -1,7 +1,5 @@
-package com.sparta.fragmentstudy.presentation
+package com.sparta.fragmentstudy.presentation.base
 
-import android.app.usage.UsageEvents
-import android.app.usage.UsageEvents.Event
 import android.os.Bundle
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

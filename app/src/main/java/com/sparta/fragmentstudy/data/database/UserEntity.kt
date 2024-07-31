@@ -1,7 +1,7 @@
-package com.sparta.fragmentstudy.data
+package com.sparta.fragmentstudy.data.database
 
 import android.os.Parcelable
-import com.sparta.fragmentstudy.presentation.MultiViewEnum
+import com.sparta.fragmentstudy.presentation.base.MultiViewEnum
 import kotlinx.parcelize.Parcelize
 import java.math.BigDecimal
 

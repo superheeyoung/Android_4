@@ -1,4 +1,4 @@
-package com.sparta.fragmentstudy.presentation
+package com.sparta.fragmentstudy.presentation.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.sparta.fragmentstudy.data.CacheDataSource
-import com.sparta.fragmentstudy.data.GetUserRepositoryImpl
-import com.sparta.fragmentstudy.data.UserEntity
+import com.sparta.fragmentstudy.data.database.CacheDataSource
+import com.sparta.fragmentstudy.data.database.GetUserRepositoryImpl
+import com.sparta.fragmentstudy.data.database.UserEntity
 import com.sparta.fragmentstudy.databinding.FragmentFirstBinding
-import com.standard.multiviewtyperecyclerview.presentation.main.main.MultiCardAdapter
 import kotlinx.coroutines.launch
 
 

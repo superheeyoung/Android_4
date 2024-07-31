@@ -1,14 +1,13 @@
-package com.standard.multiviewtyperecyclerview.presentation.main.main
+package com.sparta.fragmentstudy.presentation.base
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.sparta.fragmentstudy.data.UserEntity
+import com.sparta.fragmentstudy.data.database.UserEntity
 import com.sparta.fragmentstudy.databinding.ItemBlueCardBinding
 import com.sparta.fragmentstudy.databinding.ItemDefaultBinding
 import com.sparta.fragmentstudy.databinding.ItemLightBlueCardBinding
 import com.sparta.fragmentstudy.databinding.ItemOrangeCardBinding
-import com.sparta.fragmentstudy.presentation.MultiViewEnum
 
 //adapter : 아이템 단위로 view를 생성하여 recyclerView에 바인딩 시키는 역할
 //클릭 이벤트 처리 람다함수 파라메터로 사용

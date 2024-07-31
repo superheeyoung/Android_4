@@ -1,12 +1,10 @@
-package com.sparta.fragmentstudy.presentation
+package com.sparta.fragmentstudy.presentation.base
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayout
 import com.sparta.fragmentstudy.R
-import com.sparta.fragmentstudy.data.UserEntity
 import com.sparta.fragmentstudy.databinding.ActivityMainFragmentContainerBinding
 import kotlinx.coroutines.launch
 
