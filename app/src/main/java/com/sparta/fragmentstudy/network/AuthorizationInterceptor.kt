@@ -12,7 +12,8 @@ class AuthorizationInterceptor : Interceptor {
             .addHeader(
                 "Authorization",
                 "KakaoAK %s".format("5148c3ed7f75bb6d1e7d1525cc311b48"),
-            ).build()
+            )
+            .build()
 
         return chain.proceed(newRequest)
     }

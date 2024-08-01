@@ -16,6 +16,7 @@ class SearchListAdapter(private val onClick: (ImageDocumentResponse) -> Unit) :
             oldItem: ImageDocumentResponse,
             newItem: ImageDocumentResponse
         ): Boolean =
+            //unique key 없을 시 hashcode로 비교
             oldItem.hashCode() == newItem.hashCode()
 
         override fun areContentsTheSame(
