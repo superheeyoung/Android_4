@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.sparta.fragmentstudy.data.database.UserEntity
+import com.sparta.fragmentstudy.data.database.mockup.UserEntity
 import com.sparta.fragmentstudy.databinding.FragmentSecondBinding
 
 class SecondDataFragment : Fragment() {

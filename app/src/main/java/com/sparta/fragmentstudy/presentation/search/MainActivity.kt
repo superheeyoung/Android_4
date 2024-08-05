@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() ,LikeUserEvent {
         ActivityMainFragmentContainerBinding.inflate(layoutInflater)
     }
 
-    private var favoriteUser : ImageDocumentResponse? = null
+    private var favoriteUser : User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() ,LikeUserEvent {
         })
     }
 
-    override fun likeUser(item: ImageDocumentResponse) {
+    override fun likeUser(item: User) {
         favoriteUser = item
     }
 }

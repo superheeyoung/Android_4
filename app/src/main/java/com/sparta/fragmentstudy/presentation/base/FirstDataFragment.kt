@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.sparta.fragmentstudy.data.database.CacheDataSource
-import com.sparta.fragmentstudy.data.database.GetUserRepositoryImpl
-import com.sparta.fragmentstudy.data.database.UserEntity
+import com.sparta.fragmentstudy.data.database.mockup.CacheDataSource
+import com.sparta.fragmentstudy.data.database.mockup.GetUserRepositoryImpl
+import com.sparta.fragmentstudy.data.database.mockup.UserEntity
 import com.sparta.fragmentstudy.databinding.FragmentFirstBinding
 import kotlinx.coroutines.launch
 

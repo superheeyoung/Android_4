@@ -1,4 +1,4 @@
-package com.sparta.fragmentstudy.data.database
+package com.sparta.fragmentstudy.data.database.mockup
 
 import com.sparta.fragmentstudy.presentation.base.UserRepository
 /*

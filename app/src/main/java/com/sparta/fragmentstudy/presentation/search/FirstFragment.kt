@@ -2,12 +2,14 @@ package com.sparta.fragmentstudy.presentation.search
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.sparta.fragmentstudy.data.database.FavoriteUserRoomDatabase
 import com.sparta.fragmentstudy.databinding.FragmentSearchBinding
 import com.sparta.fragmentstudy.network.RetrofitClient
 import kotlinx.coroutines.launch
@@ -19,8 +21,11 @@ class FirstFragment : Fragment() {
 
     private val searchListAdapter: SearchListAdapter by lazy {
         SearchListAdapter { user ->
-            val favoriteUser = user.copy(isFavorite = true)
-            likeUserEvent?.likeUser(favoriteUser)
+            //Case 1) Use Listnener
+            /*val favoriteUser = user.copy(isFavorite = true)
+            likeUserEvent?.likeUser(favoriteUser)*/
+            //Case 2) Use Room
+            insertFavoriteUser(user)
         }
     }
 
@@ -51,8 +56,8 @@ class FirstFragment : Fragment() {
 
     private fun getUserImageList(query: String) {
         viewLifecycleOwner.lifecycleScope.launch {
-            val userList = RetrofitClient.searchUserImageList.getSearchImage(query)
-            searchListAdapter.submitList(userList.documents)
+            val userList = RetrofitClient.searchUserImageList.getSearchImage(query).documents.orEmpty()
+            searchListAdapter.submitList(toUser(userList))
         }
     }
 
@@ -60,6 +65,13 @@ class FirstFragment : Fragment() {
         searchRecyclerview.adapter = searchListAdapter
         editQuery.doAfterTextChanged { query ->
             getUserImageList(query.toString())
+        }
+    }
+
+    private fun insertFavoriteUser(user : User) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val userDb = FavoriteUserRoomDatabase.getDatabase(requireContext())
+            userDb.userDao().insertFavoriteUser(user)
         }
     }
 

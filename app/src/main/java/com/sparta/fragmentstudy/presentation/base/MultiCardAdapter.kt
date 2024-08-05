@@ -3,7 +3,7 @@ package com.sparta.fragmentstudy.presentation.base
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.sparta.fragmentstudy.data.database.UserEntity
+import com.sparta.fragmentstudy.data.database.mockup.UserEntity
 import com.sparta.fragmentstudy.databinding.ItemBlueCardBinding
 import com.sparta.fragmentstudy.databinding.ItemDefaultBinding
 import com.sparta.fragmentstudy.databinding.ItemLightBlueCardBinding

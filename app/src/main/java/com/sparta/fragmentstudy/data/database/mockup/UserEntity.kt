@@ -1,4 +1,4 @@
-package com.sparta.fragmentstudy.data.database
+package com.sparta.fragmentstudy.data.database.mockup
 
 import android.os.Parcelable
 import com.sparta.fragmentstudy.presentation.base.MultiViewEnum

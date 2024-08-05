@@ -2,6 +2,8 @@ package com.sparta.fragmentstudy.data.remote
 
 import com.google.gson.annotations.SerializedName
 import java.util.Date
+import java.util.UUID
+import kotlin.random.Random
 
 data class ImageResponse(
     @SerializedName("meta") val meta: MetaResponse?,
@@ -22,6 +24,5 @@ data class ImageDocumentResponse(
     @SerializedName("height") val height: Int?,
     @SerializedName("display_sitename") val displaySitename: String?,
     @SerializedName("doc_url") val docUrl: String?,
-    @SerializedName("datetime") val datetime: Date?,
-    val isFavorite : Boolean = false
+    @SerializedName("datetime") val datetime: Date?
 )

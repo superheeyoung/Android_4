@@ -14,6 +14,8 @@ kotlinPlugin = "1.8.10"
 retrofit = "2.11.0"
 okhttp3 = "4.12.0"
 coil = "2.4.0"
+room = "2.6.1"
+ksp = "1.9.0-1.0.13"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -35,10 +37,16 @@ retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", ve
 #coil
 coil = { module = "io.coil-kt:coil", version.ref = "coil"}
 
+#room
+room-runtime = { group = "androidx.room", name = "room-ktx", version.ref = "room"}
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room"}
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize",  version.ref = "kotlinPlugin"}
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+room = { id = "androidx.room", version.ref = "room"}
 
 [bundles]
 retrofit = [
