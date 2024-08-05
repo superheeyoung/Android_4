@@ -42,6 +42,8 @@ class FirstFragment : Fragment() {
         initView()
     }
 
+    //fragment와 activity간의 통신을 하기 위해 context 주입
+    //라이프사이클 초기단계에서 리스너 설정
     override fun onAttach(context: Context) {
         super.onAttach(context)
         likeUserEvent = context as LikeUserEvent
