@@ -4,9 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 import com.sparta.fragmentstudy.presentation.search.User
 
-@Database(entities = [User::class], version = 1)
+@Database(entities = [User::class], version = 2)
+@TypeConverters(Converters::class)
 abstract class FavoriteUserRoomDatabase: RoomDatabase() {
     abstract fun userDao() : UserDao
 

@@ -58,6 +58,9 @@ dependencies {
     // retrofit
     implementation(libs.bundles.retrofit)
 
+    //fragment
+    implementation(libs.androidx.fragment.ktx)
+
     //coil
     implementation(libs.coil)
 

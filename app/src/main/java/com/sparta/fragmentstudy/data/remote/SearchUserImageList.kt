@@ -13,4 +13,12 @@ interface SearchUserImageList {
         @Query("page") page: Int = 1,
         @Query("size") size: Int = 10,
     ): ImageResponse
+
+    @GET("v2/search/vclip")
+    suspend fun getSearchVideo(
+        @Query("query") query: String,
+        @Query("sort") sort: String = "accuracy",
+        @Query("page") page: Int = 1,
+        @Query("size") size: Int = 10
+    ): VideoResponse
 }

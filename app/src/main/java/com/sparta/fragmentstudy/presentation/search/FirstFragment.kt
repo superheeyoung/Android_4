@@ -8,13 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import com.sparta.fragmentstudy.data.database.FavoriteUserRoomDatabase
 import com.sparta.fragmentstudy.databinding.FragmentSearchBinding
-import com.sparta.fragmentstudy.network.RetrofitClient
-import kotlinx.coroutines.Dispatchers
+import com.sparta.fragmentstudy.SpartaApplication
 import kotlinx.coroutines.launch
 
 class FirstFragment : Fragment() {
@@ -24,16 +23,27 @@ class FirstFragment : Fragment() {
 
     private val searchListAdapter: SearchListAdapter by lazy {
         SearchListAdapter { user ->
-            //Case 1) Use Listnener
             val favoriteUser = user.copy(isFavorite = true)
-            likeUserEvent?.likeUser(favoriteUser)
+            //Case 1) Use Listnener
+            /*val favoriteUser = user.copy(isFavorite = true)
+            likeUserEvent?.likeUser(favoriteUser)*/
             //Case 2) Use Room
             //insertFavoriteUser(user)
+            //Case 3) Use MVVM
+            searchViewModel.saveFavoriteUser(favoriteUser)
+            //Case 4) Use SharedViewModel
+            //sharedViewModel.setFavoriteList(favoriteUser)
         }
     }
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
+
+    private val searchViewModel by viewModels<SearchViewModel> {
+        SearchViewModelFactory((requireActivity()?.application as SpartaApplication).database)
+    }
+
+    private val sharedViewModel : FavoriteUserSharedViewModel by activityViewModels()
 
     private var likeUserEvent : LikeUserEvent? = null
 
@@ -48,6 +58,7 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initViewModel()
     }
 
     override fun onAttach(context: Context) {
@@ -55,20 +66,24 @@ class FirstFragment : Fragment() {
         likeUserEvent = context as LikeUserEvent
     }
 
-    private fun getUserImageList(query: String) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            val userList = RetrofitClient.searchUserImageList.getSearchImage(query).documents.orEmpty()
-            searchListAdapter.submitList(toUser(userList))
+    private fun initViewModel() {
+        searchViewModel.getSearchList.observe(viewLifecycleOwner) {
+            searchListAdapter.submitList(it)
+            Log.d("debug2323",it.map {
+                it.type.name
+            }.toString())
         }
     }
+
 
     private fun initView() = with(binding) {
         searchRecyclerview.adapter = searchListAdapter
         editQuery.doAfterTextChanged { query ->
-            getUserImageList(query.toString())
+            searchViewModel.getImageList(query.toString())
         }
     }
 
+    //TODO : View에서 Room 호출하기
     private fun insertFavoriteUser(user : User) {
         viewLifecycleOwner.lifecycleScope.launch {
             val userDb = FavoriteUserRoomDatabase.getDatabase(requireContext())
