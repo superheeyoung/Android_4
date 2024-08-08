@@ -8,10 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import com.sparta.fragmentstudy.data.database.FavoriteUserRoomDatabase
 import com.sparta.fragmentstudy.databinding.FragmentSearchBinding
 import com.sparta.fragmentstudy.network.RetrofitClient
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class FirstFragment : Fragment() {
@@ -22,10 +25,10 @@ class FirstFragment : Fragment() {
     private val searchListAdapter: SearchListAdapter by lazy {
         SearchListAdapter { user ->
             //Case 1) Use Listnener
-            /*val favoriteUser = user.copy(isFavorite = true)
-            likeUserEvent?.likeUser(favoriteUser)*/
+            val favoriteUser = user.copy(isFavorite = true)
+            likeUserEvent?.likeUser(favoriteUser)
             //Case 2) Use Room
-            insertFavoriteUser(user)
+            //insertFavoriteUser(user)
         }
     }
 
@@ -47,8 +50,6 @@ class FirstFragment : Fragment() {
         initView()
     }
 
-    //fragment와 activity간의 통신을 하기 위해 context 주입
-    //라이프사이클 초기단계에서 리스너 설정
     override fun onAttach(context: Context) {
         super.onAttach(context)
         likeUserEvent = context as LikeUserEvent
