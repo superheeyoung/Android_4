@@ -86,7 +86,7 @@ class FirstFragment : Fragment() {
     //TODO : View에서 Room 호출하기
     private fun insertFavoriteUser(user : User) {
         viewLifecycleOwner.lifecycleScope.launch {
-            val userDb = FavoriteUserRoomDatabase.getDatabase(requireContext())
+            val userDb = FavoriteUserRoomDatabase.getDatabase((requireActivity()?.application as SpartaApplication).applicationContext)
             userDb.userDao().insertFavoriteUser(user)
         }
     }
