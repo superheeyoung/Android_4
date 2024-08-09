@@ -34,7 +34,8 @@ class SearchViewModel(
 
             val combineDataList = imageList.await() + videoList.await()
 
-            _getSearchList.value = combineDataList
+            //내림차순으로 정렬
+            _getSearchList.value = combineDataList.sortedByDescending { it.dateTime }
         }
     }
 

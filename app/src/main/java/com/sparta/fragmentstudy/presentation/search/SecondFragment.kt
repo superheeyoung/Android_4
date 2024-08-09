@@ -26,7 +26,7 @@ class SecondFragment : Fragment() {
     }
 
     private val searchListAdapter: SearchListAdapter by lazy {
-        SearchListAdapter { }
+        SearchListAdapter{}
     }
 
     private val sharedViewModel : FavoriteUserSharedViewModel by activityViewModels()

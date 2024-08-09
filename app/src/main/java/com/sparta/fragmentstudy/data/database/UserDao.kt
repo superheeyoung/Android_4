@@ -11,6 +11,7 @@ interface UserDao {
     @Query("SELECT * FROM favorite_user_table")
     suspend fun getUsers() : List<User>
 
+    //db에 값 넣다가 충돌 발생할 경우 무시하는 옵션
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertFavoriteUser(user: User)
 }
