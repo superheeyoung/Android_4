@@ -39,10 +39,12 @@ class FirstFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
+    //해당 ViewModel을 초기화하는 Component의 LifeCycle을 따름
     private val searchViewModel by viewModels<SearchViewModel> {
         SearchViewModelFactory((requireActivity()?.application as SpartaApplication).database)
     }
 
+    //activityViewModels : root Activity의 Lifecycle을 따름
     private val sharedViewModel : FavoriteUserSharedViewModel by activityViewModels()
 
     private var likeUserEvent : LikeUserEvent? = null
