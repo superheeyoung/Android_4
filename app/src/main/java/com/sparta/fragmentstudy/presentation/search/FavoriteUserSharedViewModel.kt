@@ -1,17 +1,22 @@
 package com.sparta.fragmentstudy.presentation.search
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 
 class FavoriteUserSharedViewModel : ViewModel() {
-    private val _favoriteUserLiveData = MutableLiveData<List<User>>()
-    val favoriteUserLiveData : LiveData<List<User>> = _favoriteUserLiveData
+    private val _favoriteUserEvent = MutableSharedFlow<List<User>>(replay = 1)
+    val favoriteUserEvent : SharedFlow<List<User>> = _favoriteUserEvent.asSharedFlow()
 
     private var userList : MutableList<User> = mutableListOf()
 
     fun setFavoriteList(item : User) {
         userList.add(item)
-        _favoriteUserLiveData.value = userList
+        viewModelScope.launch {
+            _favoriteUserEvent.emit(userList)
+        }
     }
 }

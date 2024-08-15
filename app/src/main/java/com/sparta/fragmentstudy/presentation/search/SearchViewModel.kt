@@ -1,54 +1,78 @@
 package com.sparta.fragmentstudy.presentation.search
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.room.RoomDatabase
+import com.sparta.fragmentstudy.data.database.FavoriteRepositoryImpl
 import com.sparta.fragmentstudy.data.database.FavoriteUserRoomDatabase
-import com.sparta.fragmentstudy.data.remote.SearchUserImageList
+import com.sparta.fragmentstudy.data.remote.SearchRepositoryImpl
 import com.sparta.fragmentstudy.network.RetrofitClient
-import kotlinx.coroutines.async
+import com.sparta.fragmentstudy.presentation.repository.FavoriteRepository
+import com.sparta.fragmentstudy.presentation.repository.SearchRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
-    private val searchImageList: SearchUserImageList,
-    private val favoriteUserDataBase: FavoriteUserRoomDatabase
+    private val searchRepository: SearchRepository,
+    private val favoriteRepository: FavoriteRepository
 ) : ViewModel() {
 
-    private val _getSearchList: MutableLiveData<List<User>> = MutableLiveData()
-    val getSearchList: LiveData<List<User>> get() = _getSearchList
+    private val _favoriteItemUiState = MutableStateFlow<UiState<List<User>>>(UiState.Loading)
+    val favoriteItemUiState: StateFlow<UiState<List<User>>> = _favoriteItemUiState
 
-    private val _getFavoriteList: MutableLiveData<List<User>> = MutableLiveData()
-    val getFavoriteUserList: LiveData<List<User>> get() = _getFavoriteList
+    private val _searchUiState = MutableStateFlow<UiState<List<User>>>(UiState.Loading)
+    val searchUiState: StateFlow<UiState<List<User>>> = _searchUiState
 
     fun getImageList(query: String) {
         viewModelScope.launch {
-            val imageList =
-                async { toImageUser(searchImageList.getSearchImage(query).documents.orEmpty()) }
-            val videoList =
-                async { toVideoUser(searchImageList.getSearchVideo(query).documents.orEmpty()) }
+            _searchUiState.value = UiState.Loading
+            //single
+            /*searchRepository.searchUserImageList(query)
+                .flowOn(Dispatchers.IO)
+                .catch { error ->
+                    _searchUiState.value = UiState.Error(error.toString())
+                }
+                .collect { list ->
+                    _searchUiState.value = UiState.Success(list)
+                }*/
 
-            val combineDataList = imageList.await() + videoList.await()
-
-            //내림차순으로 정렬
-            _getSearchList.value = combineDataList.sortedByDescending { it.dateTime }
+            //parallel (2개 Api Call)
+            searchRepository.searchUserImageList(query)
+                .zip(searchRepository.searchUserVideoList(query)) { imageList, videoList ->
+                    return@zip (imageList + videoList).sortedByDescending { it.dateTime }
+                }.flowOn(Dispatchers.IO)
+                .catch { error ->
+                    _searchUiState.value = UiState.Error(error.toString())
+                }
+                .collect {
+                    _searchUiState.value = UiState.Success(it)
+                }
         }
     }
 
     fun saveFavoriteUser(item: User) {
         viewModelScope.launch {
-            favoriteUserDataBase.userDao().insertFavoriteUser(item)
+            favoriteRepository.insertFavoriteUser(item)
         }
     }
 
     fun getFavoriteUser() {
         viewModelScope.launch {
-            val favoriteList = favoriteUserDataBase.userDao().getUsers()
-            _getFavoriteList.value = favoriteList
+            favoriteRepository.getUsers()
+                .flowOn(Dispatchers.IO)
+                .catch { error ->
+                    _favoriteItemUiState.value = UiState.Error(error.toString())
+                }
+                .collect {
+                    _favoriteItemUiState.value = UiState.Success(it)
+                }
         }
     }
 }
@@ -60,8 +84,8 @@ class SearchViewModelFactory(private val database: FavoriteUserRoomDatabase) :
         extras: CreationExtras
     ): T {
         return SearchViewModel(
-            searchImageList = RetrofitClient.searchUserImageList,
-            favoriteUserDataBase = database
+            searchRepository = SearchRepositoryImpl(RetrofitClient.searchRemoteDataSource),
+            favoriteRepository = FavoriteRepositoryImpl(database)
         ) as T
     }
 }

@@ -1,5 +1,5 @@
 package com.sparta.fragmentstudy.network
-import com.sparta.fragmentstudy.data.remote.SearchUserImageList
+import com.sparta.fragmentstudy.data.remote.SearchRemoteDataSource
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -29,7 +29,7 @@ object RetrofitClient {
     }
 
     //retrofit 클래스로 interface 구현
-    val searchUserImageList : SearchUserImageList by lazy {
-        retrofit.create(SearchUserImageList::class.java)
+    val searchRemoteDataSource : SearchRemoteDataSource by lazy {
+        retrofit.create(SearchRemoteDataSource::class.java)
     }
 }

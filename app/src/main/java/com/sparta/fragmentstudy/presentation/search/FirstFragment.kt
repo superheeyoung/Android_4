@@ -6,14 +6,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.sparta.fragmentstudy.data.database.FavoriteUserRoomDatabase
 import com.sparta.fragmentstudy.databinding.FragmentSearchBinding
 import com.sparta.fragmentstudy.SpartaApplication
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class FirstFragment : Fragment() {
@@ -30,9 +35,9 @@ class FirstFragment : Fragment() {
             //Case 2) Use Room
             //insertFavoriteUser(user)
             //Case 3) Use MVVM
-            searchViewModel.saveFavoriteUser(favoriteUser)
+            //searchViewModel.saveFavoriteUser(favoriteUser)
             //Case 4) Use SharedViewModel
-            //sharedViewModel.setFavoriteList(favoriteUser)
+            sharedViewModel.setFavoriteList(favoriteUser)
         }
     }
 
@@ -45,9 +50,9 @@ class FirstFragment : Fragment() {
     }
 
     //activityViewModels : root Activity의 Lifecycle을 따름
-    private val sharedViewModel : FavoriteUserSharedViewModel by activityViewModels()
+    private val sharedViewModel: FavoriteUserSharedViewModel by activityViewModels()
 
-    private var likeUserEvent : LikeUserEvent? = null
+    private var likeUserEvent: LikeUserEvent? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,12 +73,32 @@ class FirstFragment : Fragment() {
         likeUserEvent = context as LikeUserEvent
     }
 
-    private fun initViewModel() {
-        searchViewModel.getSearchList.observe(viewLifecycleOwner) {
-            searchListAdapter.submitList(it)
-            Log.d("debug2323",it.map {
-                it.type.name
-            }.toString())
+    private fun initViewModel() = with(searchViewModel) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            searchUiState.flowWithLifecycle(viewLifecycleOwner.lifecycle)
+                .collectLatest {
+                    when (it) {
+                        is UiState.Error -> {
+                            binding.progressBar.isVisible = false
+                            Toast.makeText(
+                                requireContext(),
+                                it.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        is UiState.Loading -> {
+                            binding.progressBar.isVisible = true
+                            binding.searchRecyclerview.isVisible = false
+                        }
+
+                        is UiState.Success -> {
+                            binding.progressBar.isVisible = false
+                            binding.searchRecyclerview.isVisible = true
+                            searchListAdapter.submitList(it.data)
+                        }
+                    }
+                }
         }
     }
 
@@ -86,9 +111,10 @@ class FirstFragment : Fragment() {
     }
 
     //TODO : View에서 Room 호출하기
-    private fun insertFavoriteUser(user : User) {
+    private fun insertFavoriteUser(user: User) {
         viewLifecycleOwner.lifecycleScope.launch {
-            val userDb = FavoriteUserRoomDatabase.getDatabase((requireActivity()?.application as SpartaApplication).applicationContext)
+            val userDb =
+                FavoriteUserRoomDatabase.getDatabase((requireActivity()?.application as SpartaApplication).applicationContext)
             userDb.userDao().insertFavoriteUser(user)
         }
     }

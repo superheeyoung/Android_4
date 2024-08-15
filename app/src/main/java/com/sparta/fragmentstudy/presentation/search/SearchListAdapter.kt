@@ -32,7 +32,7 @@ class SearchListAdapter(private val onClick: (User) -> Unit) :
             oldItem == newItem
 
     }) {
-        //viewholder 추상화 해서 상속받은 클래스는 동일한 메서드를 구현해서 각각의 viewholder에 맞는 기능 추가하면 됨
+    //viewholder 추상화 해서 상속받은 클래스는 동일한 메서드를 구현해서 각각의 viewholder에 맞는 기능 추가하면 됨
     abstract class ViewHolder(
         root: View
     ) : RecyclerView.ViewHolder(root) {
@@ -48,9 +48,7 @@ class SearchListAdapter(private val onClick: (User) -> Unit) :
             title.text = item.thumbnailUrl
             thumbnail.load(item.thumbnailUrl)
             favorite.setOnClickListener {
-                if (item.isFavorite != favorite.isChecked) {
-                    onClick(item)
-                }
+                onClick(item)
             }
         }
     }
@@ -64,9 +62,7 @@ class SearchListAdapter(private val onClick: (User) -> Unit) :
             title.text = item.thumbnailUrl
             thumbnail.load(item.thumbnailUrl)
             favorite.setOnClickListener {
-                if (item.isFavorite != favorite.isChecked) {
-                    onClick(item)
-                }
+                onClick(item)
             }
         }
     }
@@ -122,7 +118,8 @@ class SearchListAdapter(private val onClick: (User) -> Unit) :
 
 
     override fun getItemViewType(position: Int): Int {
-        val muiltiViewType = SearchType.entries.find { it.viewType == getItem(position).type.viewType }
+        val muiltiViewType =
+            SearchType.entries.find { it.viewType == getItem(position).type.viewType }
         return when (muiltiViewType) {
             SearchType.IMAGE -> SearchType.IMAGE.viewType
             SearchType.VIDEO -> SearchType.VIDEO.viewType
