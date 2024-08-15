@@ -12,7 +12,7 @@ interface SearchRemoteDataSource {
         @Query("sort") sort: String = "accuracy",
         @Query("page") page: Int = 1,
         @Query("size") size: Int = 10,
-    ): ImageResponse
+    ): SearchResponse<ImageDocumentResponse>
 
     @GET("v2/search/vclip")
     suspend fun getSearchVideo(
@@ -20,5 +20,5 @@ interface SearchRemoteDataSource {
         @Query("sort") sort: String = "accuracy",
         @Query("page") page: Int = 1,
         @Query("size") size: Int = 10
-    ): VideoResponse
+    ): SearchResponse<VideoDocumentResponse>
 }

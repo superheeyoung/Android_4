@@ -5,17 +5,6 @@ import java.util.Date
 import java.util.UUID
 import kotlin.random.Random
 
-data class ImageResponse(
-    @SerializedName("meta") val meta: MetaResponse?,
-    @SerializedName("documents") val documents: List<ImageDocumentResponse>?,
-)
-
-data class MetaResponse(
-    @SerializedName("total_count") val totalCount: Int?,
-    @SerializedName("pageable_count") val pageableCount: Int?,
-    @SerializedName("is_end") val isEnd: Boolean?,
-)
-
 data class ImageDocumentResponse(
     @SerializedName("collection") val collection: String?,
     @SerializedName("thumbnail_url") val thumbnailUrl: String?,
