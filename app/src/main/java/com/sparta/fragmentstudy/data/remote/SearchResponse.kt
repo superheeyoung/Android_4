@@ -3,6 +3,7 @@ package com.sparta.fragmentstudy.data.remote
 import com.google.gson.annotations.SerializedName
 import java.util.Date
 
+//generic : 다양한 타입의 객체가 올 수 있다
 data class SearchResponse<T>(
     @SerializedName("meta")
     val meta: MetaResponse,

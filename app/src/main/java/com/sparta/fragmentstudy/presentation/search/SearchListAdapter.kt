@@ -14,10 +14,11 @@ import com.sparta.fragmentstudy.databinding.SearchListImageItemBinding
 import com.sparta.fragmentstudy.databinding.SearchListVideoItemBinding
 import com.sparta.fragmentstudy.presentation.base.MultiCardAdapter.UnknownViewHolder
 import com.sparta.fragmentstudy.presentation.base.MultiViewEnum
+import com.sparta.fragmentstudy.presentation.common.ViewHolder
 
 //DiffUtil : 두 데이터셋을 받아서 차이를 계산 -> 변환된 부분만 파악하여 recyclerView에 반영
 class SearchListAdapter(private val onClick: (User) -> Unit) :
-    ListAdapter<User, SearchListAdapter.ViewHolder>(object :
+    ListAdapter<User, ViewHolder<User>>(object :
         DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(
             oldItem: User,
@@ -32,18 +33,13 @@ class SearchListAdapter(private val onClick: (User) -> Unit) :
             oldItem == newItem
 
     }) {
-    //viewholder 추상화 해서 상속받은 클래스는 동일한 메서드를 구현해서 각각의 viewholder에 맞는 기능 추가하면 됨
-    abstract class ViewHolder(
-        root: View
-    ) : RecyclerView.ViewHolder(root) {
-        abstract fun onBind(item: User)
-    }
+
 
     class SearchImageViewHolder(
         val binding: SearchListImageItemBinding,
         private val onClick: (User) -> Unit
     ) :
-        ViewHolder(binding.root) {
+        ViewHolder<User>(binding.root) {
         override fun onBind(item: User) = with(binding) {
             title.text = item.thumbnailUrl
             thumbnail.load(item.thumbnailUrl)
@@ -57,7 +53,7 @@ class SearchListAdapter(private val onClick: (User) -> Unit) :
         val binding: SearchListVideoItemBinding,
         private val onClick: (User) -> Unit
     ) :
-        ViewHolder(binding.root) {
+        ViewHolder<User>(binding.root) {
         override fun onBind(item: User) = with(binding) {
             title.text = item.thumbnailUrl
             thumbnail.load(item.thumbnailUrl)
@@ -69,11 +65,11 @@ class SearchListAdapter(private val onClick: (User) -> Unit) :
 
     class UnknownViewHolder(
         binding: ItemDefaultBinding
-    ) : ViewHolder(binding.root) {
+    ) : ViewHolder<User>(binding.root) {
         override fun onBind(item: User) = Unit
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<User> {
         val muiltiViewType = SearchType.entries.find { it.viewType == viewType }
         return when (muiltiViewType) {
             SearchType.VIDEO -> {
@@ -112,7 +108,7 @@ class SearchListAdapter(private val onClick: (User) -> Unit) :
         }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<User>, position: Int) {
         holder.onBind(getItem(position))
     }
 
